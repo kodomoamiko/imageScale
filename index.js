@@ -11,6 +11,11 @@ console.log(`open http://localhost:${config.port}/ to lang`)
 
 let sizeConfig = config.size
 
+let outputPath = path.join(process.cwd(), 'output')
+if (!fs.existsSync(outputPath)) {
+    fs.mkdirSync(outputPath)
+}
+
 const filePath = path.resolve('./origin/')
 
 function fileDisplay(filePath){
@@ -35,7 +40,7 @@ function fileDisplay(filePath){
                       if(isFile){  
                         createImg(filename, filedir);
                       }  
-                      if(isDir){  
+                      if(isDir){
                         createDir(filedir);
                         // 递归，如果是文件夹，就继续遍历该文件夹下面的文件 
                         fileDisplay(filedir);
@@ -78,6 +83,10 @@ let createImg = (filename, filedir) => {
         w = size.width
 
         sizeConfig.forEach((item) => {
+            if (!fs.existsSync(`${x[0]}/output/${item.output}`)) {
+                fs.mkdirSync(`${x[0]}/output/${item.output}`)
+            }
+
             if (item.nameFormat) {
                 outputPath = `${x[0]}/output/${item.output}${y}${o[0]}${item.nameFormat}.${o[1]}`
             }
@@ -93,7 +102,7 @@ let createImg = (filename, filedir) => {
                     console.log('失败啦🙂：', err)
                 }
                 else {
-                    console.log(outputPath)
+                    console.log('success')
                 }
             })
         })
